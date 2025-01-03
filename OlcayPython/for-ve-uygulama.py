@@ -23,9 +23,9 @@
 # for item in d:      #sadece key bilgilerini aldı yani k1,k2,k3
 #     print(item)
 
-# d = {"k1":1 ,"k2":2, "k3":3}
-# for key,value in d.items():      #sadece key ve valueları aldı
-#     print(key,value)
+d = {"k1":1 ,"k2":2, "k3":3}
+for key,value in d.items():      #sadece key ve valueları aldı
+    print(key,value)
 
 
 #######Uygulama######
