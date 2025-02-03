@@ -40,18 +40,29 @@ class Student:
         finally:
             Student.connection.close()
 
-ahmet = Student("202","ahmet","yılmaz",datetime(2005, 5, 17),"E")
-ahmet.saveStudent()
+    @staticmethod
+    def saveStudents(students):
+        sql = "INSERT INTO Student(StudentNumber,Name,Surname,Birthdate,Gender) VALUES(%s,%s,%s,%s,%s)"
+        values = students
+        Student.mycursor.executemany(sql,values)
 
+        try:
+            Student.connection.commit()
+            print(f"{Student.mycursor.rowcount} tane kayıt eklendi.")
+        except mysql.connector.Error as err:
+            print("hata:", err)
+        finally:
+            Student.connection.close()
+ogrenciler=[
+    ("301", "Ahmet", "Yılmaz", datetime(2005, 5, 17), "E"),
+    ("302", "Ali", "Can", datetime(2005, 6, 17), "E"),
+    ("303", "Canan", "Tan", datetime(2005, 7, 7), "K"),
+    ("304", "Ayşe", "Taner", datetime(2005, 9, 23), "K"),
+    ("305", "Bahadır", "Toksöz", datetime(2004, 7, 27), "E"),
+    ("306", "Ali", "Cenk", datetime(2003, 8, 25), "E")
+]
 
-# ogrenciler=[
-#     ("101", "Ahmet", "Yılmaz", datetime(2005, 5, 17), "E"),
-#     ("102", "Ali", "Can", datetime(2005, 6, 17), "E"),
-#     ("103", "Canan", "Tan", datetime(2005, 7, 7), "K"),
-#     ("104", "Ayşe", "Taner", datetime(2005, 9, 23), "K"),
-#     ("105", "Bahadır", "Toksöz", datetime(2004, 7, 27), "E"),
-#     ("106", "Ali", "Cenk", datetime(2003, 8, 25), "E")
-# ]
+Student.saveStudents(ogrenciler)
 
 # mycursor.executemany(sql, ogrenciler)
 
