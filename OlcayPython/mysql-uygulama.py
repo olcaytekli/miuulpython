@@ -17,7 +17,11 @@ class Student:
     connection = connection 
     mycursor = connection.cursor()
 
-    def __init__(self,studentNumber,name,surname,birthdate,gender):
+    def __init__(self,id,studentNumber,name,surname,birthdate,gender):
+        if id is None:
+            self.id = 0
+        else:
+            self.id = id
         self.studentNumber = studentNumber
         self.name = name 
         self.surname = surname
@@ -76,4 +80,52 @@ class Student:
             print("hata",err)
         # finally:
         #     Student.connection.close()
-Student.StudentInfo()
+# Student.StudentInfo()
+
+    @staticmethod
+    def getStudentsGender(gender):
+        sql = "select * from student where gender = %s"
+        value = (gender,)
+        
+        Student.mycursor.execute(sql,value)
+
+        try:
+            return Student.mycursor.fetchall()
+        except mysql.connector.Error as err:
+            print("Error", err)
+
+    @staticmethod
+    def updateStudents(liste):
+        sql ="update student set studentnumber =%s,name=%s,surname=%s,birthdate=%s,gender=%s where id =%s"
+        values = []
+        order = [1,2,3,4,5,0]
+        for item in liste:
+            item = [item[i] for i in order]
+            values.append(item)
+        Student.mycursor.executemany(sql,values)
+
+        try:
+            Student.connection.commit()
+            print(f"{Student.mycursor.rowcount} tane kayıt güncellendi")
+        except mysql.connector.Error as err:
+            print("hata:", err)
+
+
+# student = Student.getStudentById(8)
+
+# student.name = "Çınar"
+# student.surname ="Turan"
+
+# student.updateStudent()
+
+students = Student.getStudentsGender("E")
+print(students)
+
+liste = []
+for std in students:
+    std = list(std)
+    std[2] = 'Mr '+ std[2]
+    liste.append(std)
+Student.updateStudents(liste)
+    
+
