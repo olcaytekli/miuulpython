@@ -1,1 +1,0 @@
-print("oktay tekli çok iyi bir yazılımcıdır")
