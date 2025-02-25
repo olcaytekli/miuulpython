@@ -55,3 +55,46 @@ df["age"] = df.index
 
 
 df.reset_index()  #resetleme
+
+## Değişkenler Üzerine İşlemler ##
+
+"age" in df  #bu değişken df'nin içinde var mı sorusu
+
+df[["age"]].head()
+
+df[["age","alive"]] #bir dataframeden birden fazla değişken seçmek istersek
+
+
+col_names = ["age","adult_male","alive"]
+df[col_names]
+
+df["age2"] = df["age"] ** 2    #bir df'ye değişken ekleme
+df["age3"] = df["age"] / df["age2"]
+
+df.drop("age3",axis = 1)    #bir değişkeni silmek istersek
+df.drop(col_names,axis = 1) #birden fazla değişkeni silmek istersek
+
+df.loc[:, df.columns.str.contains("age")] #dflerde seçme işlemi için kullanılan özel bir yapıdır loc
+
+# iloc & loc 
+
+#iloc : integer based selection
+
+df.iloc[0:3]
+df.iloc[0,0]
+
+#loc: label based selection
+
+df.loc[0:3]
+
+
+# Koşullu Seçim (Conditional Selection)
+
+df[df["age"]> 50]  #yaşı 50den büyük
+df[df["age"]> 50]["age"].count()
+
+df.loc[df["age"]> 50,["class","age"]]  #yaşı 50den büyük olanların sınıf bilgisini getirir
+df.loc[(df["age"]> 50) & (df["sex"] == "male"),["class","age"]] #parantez önemli
+df.loc[(df["age"]> 50) & (df["sex"] == "male") & (df["embark_town"] == "Cherbourg"),["class","age","sex","embark_town"]]
+
+
